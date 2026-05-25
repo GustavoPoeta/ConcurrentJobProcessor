@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products Upload</title>
+    <link rel="stylesheet" href="./index.css" />
+</head>
+
+<body>
+
+    <header>
+        <div class="header-content">
+            <div class="logo">Products</div>
+
+            <div class="search-bar">
+                <input type="text" placeholder="Search products..." />
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div class="upload-card">
+            <div class="upload-title">
+                Upload Products CSV
+            </div>
+
+            <form id="myForm" class="upload-form">
+                <input
+                    type="file"
+                    id="fileInput"
+                    name="fileInput"
+                    class="file-input"
+                />
+
+                <button type="submit" class="upload-btn">
+                    Upload Products
+                </button>
+            </form>
+
+            <div id="connectionStatus" class="status disconnected">
+                Connecting...
+            </div>
+        </div>
+
+        <div id="productsDiv" class="products-grid">
+            <div class="empty-state">
+                Waiting for products...
+            </div>
+        </div>
+
+    </div>
+
+    <script src="./index.js" type="module">
+    </script>
+
+</body>
+</html>

@@ -1,22 +1,28 @@
 services:
   api:
-    build:
-      context: .
-      dockerfile: ConcurrentJobProcessor/Dockerfile
+    image: mcr.microsoft.com/dotnet/sdk:10.0
+    container_name: concurrent_job_processor
 
-    container_name: concurrent-job-processor
+    volumes:
+      - .:/workspace
 
-    restart: unless-stopped
+    working_dir: /workspace
+
+    environment:
+      ASPNETCORE_URLS: http://+:5000
+      ASPNETCORE_ENVIRONMENT: Development
+
+    command: dotnet run --no-launch-profile
+
+    depends_on:
+      - postgres
 
     env_file:
       - .env
 
     ports:
-      - "8080:8080"
-      - "8081:8081"
-
-    depends_on:
-      - postgres
+      - "5000:5000"
+      - "5001:5001"
 
   postgres:
     image: postgis/postgis:16-3.4

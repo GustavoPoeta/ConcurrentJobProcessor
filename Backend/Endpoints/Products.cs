@@ -1,19 +1,20 @@
-﻿using ConcurrentJobProcessor.Endpoints.Contracts;
+﻿using ConcurrentJobProcessor.Channels;
+using ConcurrentJobProcessor.Endpoints.Contracts;
 using ConcurrentJobProcessor.Models;
-using ConcurrentJobProcessor.Queues;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Channels;
 
 
 namespace ConcurrentJobProcessor.Endpoints
 {
     public class Products : EndpointGroupBase
     {
-        private readonly ProductsQueue _productsQueue;
+        private readonly ProductsChannel _channel;
 
-        public Products (ProductsQueue productsQueue)
+        public Products (ProductsChannel channel)
         {
-            _productsQueue = productsQueue;
+            _channel = channel;
         }
 
         public override string? GroupName => "products";
@@ -25,13 +26,11 @@ namespace ConcurrentJobProcessor.Endpoints
 
         public async Task<Ok> AddProductsCsv([FromForm] AddProductsCsvRequest request)
         {
-            using MemoryStream memoryStream = new();
+            using var memoryStream = new MemoryStream();
 
             await request.File.CopyToAsync(memoryStream);
 
-            Job job = new(Guid.NewGuid(), "addProducts", memoryStream.ToArray());
-
-            _productsQueue.Enqueue(job);
+            await _channel.WriteAsync(new Job(Guid.NewGuid(), "Prod", memoryStream.ToArray()));
 
             return TypedResults.Ok();
         }

@@ -1,6 +1,7 @@
 using ConcurrentJobProcessor;
+using ConcurrentJobProcessor.Channels;
 using ConcurrentJobProcessor.Endpoints.Extensions;
-using ConcurrentJobProcessor.Queues;
+using ConcurrentJobProcessor.Hubs;
 using ConcurrentJobProcessor.Workers;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -14,11 +15,26 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
-builder.Services.AddSingleton<ProductsQueue>();
-builder.Services.AddScoped<IWorker, AddProductsWorker>();
+// not optimal or safe, but as this is just a demo, all origins are allowed
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://127.0.0.1:5500")
+              .AllowAnyMethod()
+              .AllowCredentials()
+              .AllowAnyHeader();
+    });
+});
+
+builder.Services.AddSignalR();
+
+builder.Services.AddSingleton<ProductsChannel>();
+
 builder.Services.AddHostedService<BackgroundWorker>();
 
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
+
 
 var app = builder.Build();
 
@@ -30,6 +46,13 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 
-app.MapEndpoints();
+app.UseCors();
+
+app.MapEndpoints(); 
+
+app.MapHub<ProductsHub>("/products/hub", options =>
+{
+    options.AllowStatefulReconnects = true;
+});
 
 app.Run();
