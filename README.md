@@ -1,100 +1,189 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+```txt
+# Concurrent Job Processor
+
+<!-- Improved compatibility of back to top link -->
 <a id="readme-top"></a>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
 
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-<!-- ABOUT THE PROJECT -->
+<div align="center">
+
+<h3 align="center">Concurrent Job Processor</h3>
+
+<p align="center">
+A demonstration project for asynchronous and multi-threaded task processing using .NET, PostgreSQL, Docker, and SignalR.
+Focused on improving performance when importing large CSV datasets.
+</p>
+
+</div>
+
+---
+
 ## About The Project
 
-This is a demonstration of how asynchronous multi-threaded tasks work.
-In my technical school's final project, I had a feature that added students using a csv file, and it was considerably slow; so I did this demo to learn and improve a better way to do it.
+This project demonstrates how asynchronous multi-threaded processing works in practice.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+The idea came from a feature developed during my technical school's final project, where importing students from a CSV file became considerably slow as the dataset increased.
 
-<!-- GETTING STARTED -->
+To better understand concurrency, background jobs, and scalable processing, I built this demo application that processes CSV imports more efficiently using workers and asynchronous job execution.
+
+### Technologies Used
+
+- .NET 10
+- ASP.NET Core
+- PostgreSQL 18
+- Docker
+- SignalR
+- Entity Framework Core
+
+---
+
 ## Getting Started
 
 ### Prerequisites
 
-This project needs:
-* .NET 10
-* PostgreSQL 18
-* Docker
+Make sure you have the following installed:
 
-### Installation
+- .NET 10 SDK
+- PostgreSQL 18
+- Docker
 
-1. Clone the repo
-   ```sh
-   git clone https://github.com/GustavoPoeta/ConcurrentJobProcessor.git
-   ```
-   
-2. ```sh
-   cd ConcurrentJobProcessor
-   cd Backend
-   ```
+---
 
-3. Create a .env file in backend folder and fill it with postgresql credentials and connection string (follow the .env.example)
+## Installation
 
-4. In the docker compose file, change api command to sleep infinity.
+### 1. Clone the repository
 
+git clone https://github.com/GustavoPoeta/ConcurrentJobProcessor.git
 
-5. Run the containers
-   ```sh
-   docker compose up
-   ```
-6. Open the api container's terminal:
-    ```sh
-   docker exec -it concurrent_job_processor bash
-   ```
+### 2. Navigate to the backend folder
 
-8. Install dotnet ef:
-  ```sh
-   dotnet tool install --global dotnet-ef
-   export PATH="$PATH:/root/.dotnet/tools"
-   ```
+cd ConcurrentJobProcessor
+cd Backend
 
-8. Run the migration
-   ```sh
-   dotnet ef database update
-   ```
+### 3. Create the `.env` file
 
-9. Delete the api and stop postgres container.
+Create a `.env` file inside the `Backend` folder and configure it using the `.env.example` file as reference.
 
-10. Change the docker compose file back to:
-   ```sh
-   dotnet run --no-launch-profile
-   ```
+---
 
-11. Create a CSV file with these headers and populate it: name,categories,price
+### 4. Temporarily change the Docker Compose API command
 
-12. Run the containers
-   ```sh
-   docker compose up
-   ```
+In the `docker-compose.yml`, change the API command to:
 
-13. Open the index.html inside Frontend/test.
+command: sleep infinity
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+This allows entering the container before starting the application.
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+---
+
+### 5. Start the containers
+
+docker compose up
+
+---
+
+### 6. Access the API container terminal
+
+docker exec -it concurrent_job_processor bash
+
+---
+
+### 7. Install Entity Framework CLI tools
+
+dotnet tool install --global dotnet-ef
+export PATH="$PATH:/root/.dotnet/tools"
+
+---
+
+### 8. Run database migrations
+
+dotnet ef database update
+
+---
+
+### 9. Stop and remove the API container
+
+After the migration finishes:
+
+- Stop the containers
+- Remove the API container
+
+---
+
+### 10. Restore the original Docker Compose command
+
+Change the API command back to:
+
+command: dotnet run --no-launch-profile
+
+---
+
+### 11. Prepare the CSV file
+
+Create a CSV file using the following headers:
+
+name,categories,price
+
+Example:
+
+Coffee Maker,Kitchen,120.50
+Gaming Mouse,Electronics,89.90
+Notebook,Office,15.00
+
+---
+
+### 12. Start the containers again
+
+docker compose up
+
+---
+
+### 13. Open the frontend test page
+
+Open the following file in your browser:
+
+Frontend/test/index.html
+
+---
+
+## Features
+
+- CSV product import
+- Concurrent background job processing
+- Worker-based architecture
+- SignalR real-time updates
+- PostgreSQL persistence
+- Dockerized environment
+
+---
+
+## Motivation
+
+This project exists mainly as a learning exercise around:
+
+- Concurrency
+- Background processing
+- Worker patterns
+- Scalability
+- Async architecture in .NET
+
+A common mistake in these systems is trying to solve performance issues only with faster queries or better hardware. In many cases, the bottleneck is architectural — especially when processing large sequential operations synchronously.
+
+This project explores a different approach.
+
+---
+
+## Author
+
+### Gustavo Poeta
+
+- LinkedIn: https://www.linkedin.com/in/gustavopoeta/
+
+---
+
+<!-- MARKDOWN LINKS -->
 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/gustavopoeta/
+```
