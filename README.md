@@ -1,4 +1,4 @@
-```txt
+
 # Concurrent Job Processor
 
 <!-- Improved compatibility of back to top link -->
